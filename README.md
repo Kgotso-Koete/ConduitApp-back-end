@@ -1,6 +1,6 @@
 # About the project
 
-This is the code I wrote following the [Thinkster IO](https://thinkster.io/) tutorial on building a Medium clone (blogging social network) using the MERN stack (Mongodb Express React and Node) and is based on the ([Thinkster IO Real World](https://github.com/gothinkster/realworld), from the [Thinkster Full Stack tutorial series](https://thinkster.io/tutorials/fullstack) by [Thinkster IO](https://thinkster.io/)
+This is the code I wrote following the [Thinkster IO](https://thinkster.io/) tutorial on building a Medium clone (blogging social network) using the MERN stack (Mongodb Express React and Node) and is based on the ([Thinkster IO Real World App](https://github.com/gothinkster/realworld), from the [Thinkster Full Stack tutorial series](https://thinkster.io/tutorials/fullstack) by [Thinkster IO](https://thinkster.io/)
 
 This code is for the back end. [here is the tutorial](https://thinkster.io/tutorials/node-json-api). The front end code I wrote can be found [here]().
 
@@ -37,11 +37,18 @@ Run `npm start`
 
 Open your web browser and go to http://localhost:3000
 
-#
+# Acknowledgements
 
 Special thanks to [Thinkster IO](https://thinkster.io/) for a great tutorial. The Real World mother of all demo apps is very ambitious and is exactly what the world needs.
 <br/>
 <br/>
+
+# License
+
+The codebase is MIT licensed unless otherwise specified.
+
+#
+
 To be modified further by Kgotso Koete
 <br/>
 Johannesburg, November 2019
