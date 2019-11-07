@@ -1,5 +1,5 @@
 var jwt = require("express-jwt");
-var secret = require("../config").secret;
+var secret = require("../config/config").secret;
 
 function getTokenFromHeader(req) {
   if (

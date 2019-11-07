@@ -1,11 +1,11 @@
 {
   "id": "410edddc-dbbf-5d80-9c82-759f9d13096b",
-  "name": "Conduit",
+  "name": "Conduit-development",
   "values": [
     {
       "enabled": true,
-      "key": "apiUrl",
-      "value": "https://conduit.productionready.io/api",
+      "key": "APIURL",
+      "value": "http://localhost:3000/api",
       "type": "text"
     },
     {

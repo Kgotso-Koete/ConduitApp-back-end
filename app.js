@@ -10,6 +10,8 @@ var fs = require("fs"),
   errorhandler = require("errorhandler"),
   mongoose = require("mongoose");
 
+require("dotenv").config();
+
 var isProduction = process.env.NODE_ENV === "production";
 
 // Create global app object
@@ -88,7 +90,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-// finally, let's start our server...
+// finally, start the server
 var server = app.listen(process.env.PORT || 3000, function() {
   console.log("Listening on port " + server.address().port);
 });

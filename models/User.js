@@ -4,7 +4,7 @@ var uniqueValidator = require("mongoose-unique-validator");
 // Used to create password hash
 var crypto = require("crypto");
 // For the JWT passed to the front-end that will be used for authentication
-var jwt = require("jsonwebtoken"); // for the JWT
+var jwt = require("jsonwebtoken");
 var secret = require("../config/config").secret;
 
 var UserSchema = new mongoose.Schema(
@@ -35,6 +35,9 @@ var UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// To check that username and passwords for registering users is unique
+UserSchema.plugin(uniqueValidator, { message: "is already taken." });
+
 // Create a method for setting User passwords
 UserSchema.methods.setPassword = function(password) {
   this.salt = crypto.randomBytes(16).toString("hex");
@@ -51,9 +54,8 @@ UserSchema.methods.validPassword = function(password) {
   return this.hash === hash;
 };
 
-UserSchema.plugin(uniqueValidator, { message: "is already taken." });
-
 // Create a method on the user model to generate a JWT
+// Setting the token expiration to 60 days in the future
 UserSchema.methods.generateJWT = function() {
   var today = new Date();
   var exp = new Date(today);
@@ -74,9 +76,7 @@ UserSchema.methods.toAuthJSON = function() {
   return {
     username: this.username,
     email: this.email,
-    token: this.generateJWT(),
-    bio: this.bio,
-    image: this.image
+    token: this.generateJWT()
   };
 };
 
