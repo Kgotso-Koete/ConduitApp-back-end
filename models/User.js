@@ -81,18 +81,6 @@ UserSchema.methods.toAuthJSON = function() {
   };
 };
 
-// Create a method that returns user's public profile data
-UserSchema.methods.toProfileJSONFor = function(user) {
-  return {
-    id: this._id, // add object id to make it easier to debug
-    username: this.username,
-    bio: this.bio,
-    image:
-      this.image || "https://static.productionready.io/images/smiley-cyrus.jpg",
-    following: false
-  };
-};
-
 // Create a method for a user to favorite an article
 UserSchema.methods.favorite = function(id) {
   if (this.favorites.indexOf(id) === -1) {
@@ -109,10 +97,46 @@ UserSchema.methods.unfavorite = function(id) {
 };
 
 // Create a method for a user to check if they've favorited an article
+// To tell the front end whether it should show a like or unlike button for a given article
 UserSchema.methods.isFavorite = function(id) {
   return this.favorites.some(function(favoriteId) {
     return favoriteId.toString() === id.toString();
   });
+};
+
+// Create a method for a following another user
+UserSchema.methods.follow = function(id) {
+  if (this.following.indexOf(id) === -1) {
+    this.following = this.following.concat([id]);
+  }
+
+  return this.save();
+};
+
+// Create a method for a unfollowing another user
+UserSchema.methods.unfollow = function(id) {
+  this.following.remove(id);
+  return this.save();
+};
+
+// Create a method for checking if a user is following another user
+// To tell the front end whether it should show a follow or unfollow button for a given user's profile
+UserSchema.methods.isFollowing = function(id) {
+  return this.following.some(function(followId) {
+    return followId.toString() === id.toString();
+  });
+};
+
+// Create a method that returns user's public profile data
+UserSchema.methods.toProfileJSONFor = function(user) {
+  return {
+    id: this._id, // add object id to make it easier to debug
+    username: this.username,
+    bio: this.bio,
+    image:
+      this.image || "https://static.productionready.io/images/smiley-cyrus.jpg",
+    following: user ? user.isFollowing(this._id) : false
+  };
 };
 
 mongoose.model("User", UserSchema);
