@@ -268,7 +268,7 @@ No additional parameters required
 
 ## Unfavoriting an article
 
-DELETE /api/articles/:slug/favorite
+`DELETE /api/articles/:slug/favorite`
 
 Authentication required, returns the Article
 

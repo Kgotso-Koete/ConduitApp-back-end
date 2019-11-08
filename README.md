@@ -39,11 +39,11 @@ The API specification is listed in the /api folder of this repository
 
 # How to run the code:
 
-The app is deployed on [??]. Here is the [demo]()
+The app is deployed on [??]. Here is the [demo](), and here is the production api link `{{api link}}` that can be used with any front end
 
-## 1: API Base URL
+## 1: Download Postman API environment
 
-Add `[API link to be included]` as the 'proxy' value in package.json
+Load the `Conduit.postman.{{environment}}.json` files in the `/api_spec` folder into Postman
 
 ## 2: Install packages
 
@@ -55,7 +55,7 @@ Run `npm start`
 
 ## 4: Open it
 
-Open your web browser and go to http://localhost:3000
+Open [Postman](https://www.getpostman.com/) and begin making requests to `http://localhost:3000/api/{{request}}`
 
 # Application Structure
 
