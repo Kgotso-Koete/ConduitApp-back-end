@@ -80,4 +80,15 @@ UserSchema.methods.toAuthJSON = function() {
   };
 };
 
+// Create a method that returns user's public profile data
+UserSchema.methods.toProfileJSONFor = function(user) {
+  return {
+    username: this.username,
+    bio: this.bio,
+    image:
+      this.image || "https://static.productionready.io/images/smiley-cyrus.jpg",
+    following: false
+  };
+};
+
 mongoose.model("User", UserSchema);
