@@ -6,14 +6,34 @@ This code is for the back end. [here is the tutorial](https://thinkster.io/tutor
 
 # Description and features
 
-For now, the application will have the following user stories and corresponding features:
+## General functionality:
 
-1. Authentication with JWT
-2. Profiles with images
-3. Write/edit/read articles
-4. Comments on articles
-5. Ability to "favorite" articles
-6. Ability to follow other users & have their articles show up in your feed
+- Authenticate users via JWT (login/signup pages + logout button on settings page)
+- CRU\* users (sign up & settings page - no deleting required)
+- CRUD Articles
+- CR\*D Comments on articles (no updating required)
+- GET and display paginated lists of articles
+- Favorite articles
+- Follow other users
+
+## The general page breakdown is as follows:
+
+- Home page (URL: /#/ )
+  - List of tags
+  - List of articles pulled from either Feed, Global, or by Tag
+  - Pagination for list of articles
+- Sign in/Sign up pages (URL: /#/login, /#/register )
+  - Use JWT (store the token in localStorage)
+- Settings page (URL: /#/settings )
+- Editor page to create/edit articles (URL: /#/editor, /#/editor/article-slug-here )
+- Article page (URL: /#/article/article-slug-here )
+  - Delete article button (only shown to article's author)
+  - Render markdown from server client side
+  - Comments section at bottom of page
+  - Delete comment button (only shown to comment's author)
+- Profile page (URL: /#/@username, /#/@username/favorites )
+  - Show basic user info
+  - List of articles populated from author's created articles or author's favorited articles
 
 The API specification is listed in the /api folder of this repository
 
@@ -36,6 +56,20 @@ Run `npm start`
 ## 4: Open it
 
 Open your web browser and go to http://localhost:3000
+
+# Application Structure
+
+1. `app.js` - The entry point to our application. This file defines the express server and connects it to MongoDB using mongoose. It also requires the routes and models to be used in the application.
+2. `config/` - This folder contains configuration for passport as well as a central location for configuration/environment variables.
+3. `routes/` - This folder contains the route definitions for the API.
+4. `models/` - This folder contains the schema definitions for the Mongoose models.
+
+# Authentication
+
+Requests are authenticated using the `Authorization` header with a valid JWT. We define two express middlewares in `routes/auth.js` that can be used to authenticate requests.
+
+1. The `required` middleware configures the express-jwt middleware using our application's secret and will return a 401 status code if the request cannot be authenticated. The payload of the JWT can then be accessed from req.payload in the endpoint.
+2. The `optional` middleware configures the express-jwt in the same way as required, but will not return a 401 status code if the request cannot be authenticated.
 
 # Acknowledgements
 
