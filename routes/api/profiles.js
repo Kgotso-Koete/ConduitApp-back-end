@@ -3,6 +3,11 @@ var mongoose = require("mongoose");
 var User = mongoose.model("User");
 var auth = require("../auth");
 
+// dummy routing test
+router.get("/ninja", function(req, res, next) {
+  return res.json({ message: "hello Batman ninja" });
+});
+
 // Prepopulate req.profile with the user's data when the :username parameter is contained within a route
 router.param("username", function(req, res, next, username) {
   User.findOne({ username: username })

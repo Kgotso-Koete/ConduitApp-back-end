@@ -13,4 +13,9 @@ router.get("/", function(req, res, next) {
     .catch(next);
 });
 
+// dummy routing test
+router.get("/ninja", function(req, res, next) {
+  return res.json({ message: "hello AUTOBOT giant robot warrior tag" });
+});
+
 module.exports = router;

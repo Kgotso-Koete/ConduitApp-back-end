@@ -6,6 +6,153 @@ var User = mongoose.model("User");
 var Comment = mongoose.model("Comment");
 var auth = require("../auth");
 
+// Use router.param to intercept & prepopulate article data from the slug and handing over to *RUD functions
+router.param("article", function(req, res, next, slug) {
+  Article.findOne({ slug: slug })
+    .populate("author")
+    .then(function(article) {
+      if (!article) {
+        return res.sendStatus(404);
+      }
+
+      req.article = article;
+
+      return next();
+    })
+    .catch(next);
+});
+
+// Router param middleware for resolving get comment details before DELETE is called
+router.param("comment", function(req, res, next, id) {
+  Comment.findById(id)
+    .then(function(comment) {
+      if (!comment) {
+        return res.sendStatus(404);
+      }
+
+      req.comment = comment;
+
+      return next();
+    })
+    .catch(next);
+});
+
+// Create publically accessible Articles querying endpoint to list all articles
+// GET /api/articles?tag=NodeJS
+router.get("/", auth.optional, function(req, res, next) {
+  var query = {};
+  var limit = 20;
+  var offset = 0;
+
+  // Mongo shell query: db.articles.find().pretty().limit(4)
+  if (typeof req.query.limit !== "undefined") {
+    limit = req.query.limit;
+  }
+
+  if (typeof req.query.offset !== "undefined") {
+    offset = req.query.offset;
+  }
+  // Mongo shell query: db.articles.find({tagList:{$in:["technology"]}}).pretty()
+  if (typeof req.query.tag !== "undefined") {
+    query.tagList = { $in: [req.query.tag] };
+  }
+
+  //  Promise.all() method takes an array of promises, then passes an array of resolved values to the attached
+  Promise.all([
+    req.query.author ? User.findOne({ username: req.query.author }) : null,
+    req.query.favorited ? User.findOne({ username: req.query.favorited }) : null
+  ])
+    .then(function(results) {
+      var author = results[0];
+      var favoriter = results[1];
+
+      // when provided, query for articles authored by this username
+      // Mongo shell query becomes: db.articles.find({"author":ObjectId("5dc5aadf955980353e2a8675")}).pretty()
+      if (author) {
+        query.author = author._id;
+      }
+
+      // Mongo shell query: db.articles.find({"_id":{$in:[ObjectId("5dc584d4da082d3b1859017f"), ObjectId("5dc57b747a16752313f85199")]}}).pretty()
+      if (favoriter) {
+        //  when provided, query for articles favorited by this username
+        query._id = { $in: favoriter.favorites };
+      } else if (req.query.favorited) {
+        query._id = { $in: [] };
+      }
+
+      //  Promise.all() method takes an array of promises, then passes an array of resolved values to the attached
+      return Promise.all([
+        Article.find(query)
+          .limit(limit)
+          .skip(offset)
+          .sort({ createdAt: "desc" })
+          .populate("author")
+          .exec(),
+
+        // Retrieve the count of articles without the limit and offset parameters
+        Article.count(query).exec(),
+
+        // Retrieve the authenticated user to confirm if user has favorited the article or followed the author
+        req.payload ? User.findById(req.payload.id) : null
+      ]).then(function(results) {
+        var articles = results[0];
+        var articlesCount = results[1];
+        var user = results[2];
+
+        return res.json({
+          articles: articles.map(function(article) {
+            return article.toJSONFor(user);
+          }),
+          articlesCount: articlesCount
+        });
+      });
+    })
+    .catch(next);
+});
+
+// Create a route for retrieving articles authored by users being followed
+// GET /api/articles/feed
+router.get("/feed", auth.required, function(req, res, next) {
+  var limit = 20;
+  var offset = 0;
+
+  if (typeof req.query.limit !== "undefined") {
+    limit = req.query.limit;
+  }
+
+  if (typeof req.query.offset !== "undefined") {
+    offset = req.query.offset;
+  }
+
+  User.findById(req.payload.id).then(function(user) {
+    if (!user) {
+      return res.sendStatus(401);
+    }
+    // Promise.all() method takes an array of promises, then passes an array of resolved values to the attached
+    // Mongo shell query: db.articles.find({"author":{$in:[ObjectId("5dc69cb535a37c1ec7241055"), ObjectId("5dc5aadf955980353e2a8675")]}}).pretty()
+    Promise.all([
+      Article.find({ author: { $in: user.following } })
+        .limit(limit)
+        .skip(offset)
+        .populate("author")
+        .exec(),
+      Article.count({ author: { $in: user.following } })
+    ])
+      .then(function(results) {
+        var articles = results[0];
+        var articlesCount = results[1];
+
+        return res.json({
+          articles: articles.map(function(article) {
+            return article.toJSONFor(user);
+          }),
+          articlesCount: articlesCount
+        });
+      })
+      .catch(next);
+  });
+});
+
 // Make the endpoint for creating articles for logged in users
 // POST /api/articles
 router.post("/", auth.required, function(req, res, next) {
@@ -23,22 +170,6 @@ router.post("/", auth.required, function(req, res, next) {
         console.log(article.author);
         return res.json({ article: article.toJSONFor(user) });
       });
-    })
-    .catch(next);
-});
-
-// Use router.param to intercept & prepopulate article data from the slug and handing over to *RUD functions
-router.param("article", function(req, res, next, slug) {
-  Article.findOne({ slug: slug })
-    .populate("author")
-    .then(function(article) {
-      if (!article) {
-        return res.sendStatus(404);
-      }
-
-      req.article = article;
-
-      return next();
     })
     .catch(next);
 });
@@ -190,21 +321,6 @@ router.get("/:article/comments", auth.optional, function(req, res, next) {
             })
           });
         });
-    })
-    .catch(next);
-});
-
-// Router param middleware for resolving get comment details before DELETE is called
-router.param("comment", function(req, res, next, id) {
-  Comment.findById(id)
-    .then(function(comment) {
-      if (!comment) {
-        return res.sendStatus(404);
-      }
-
-      req.comment = comment;
-
-      return next();
     })
     .catch(next);
 });

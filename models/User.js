@@ -77,7 +77,9 @@ UserSchema.methods.toAuthJSON = function() {
     id: this._id, // add object id to make it easier to debug
     username: this.username,
     email: this.email,
-    token: this.generateJWT()
+    token: this.generateJWT(),
+    followingList: this.following,
+    favoriteList: this.favorites
   };
 };
 
