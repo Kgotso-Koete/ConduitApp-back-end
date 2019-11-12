@@ -80,7 +80,7 @@ Requests are authenticated using the `Authorization` header with a valid JWT. We
 - Back end
 
   - Version 1 (Thinkster Tutorial): 22 hours
-  - Version 2 (personal modifications): ?
+  - Version 2 (personal modifications): 7 hours (to add commentCount and Trending article list)
 
 - Front end
 
