@@ -1,26 +1,15 @@
 var router = require("express").Router();
 var passport = require("passport");
 var mongoose = require("mongoose");
-var Comment = mongoose.model("Comment");
 var Article = mongoose.model("Article");
 var User = mongoose.model("User");
-
+var Comment = mongoose.model("Comment");
 var auth = require("../auth");
 
 // Use router.param to intercept & prepopulate article data from the slug and handing over to *RUD functions
 router.param("article", function(req, res, next, slug) {
   Article.findOne({ slug: slug })
     .populate("author")
-    .then(function(article) {
-      var count = article.comments.length - 1;
-      if (count < 0) {
-        article.commentCount = 0;
-      } else {
-        article.commentCount = count;
-      }
-
-      return article.save();
-    })
     .then(function(article) {
       if (!article) {
         return res.sendStatus(404);
@@ -298,10 +287,19 @@ router.post("/:article/comments", auth.required, function(req, res, next) {
 
       return comment.save().then(function() {
         req.article.comments = req.article.comments.concat([comment]);
-
-        return req.article.save().then(function(article) {
-          res.json({ comment: comment.toJSONFor(user) });
-        });
+        return req.article
+          .save()
+          .then(function(article) {
+            return Comment.count({ article: req.article._id }).then(function(
+              count
+            ) {
+              req.article.commentCount = count;
+              return req.article.save();
+            });
+          })
+          .then(function(article) {
+            res.json({ comment: comment.toJSONFor(user) });
+          });
       });
     })
     .catch(next);

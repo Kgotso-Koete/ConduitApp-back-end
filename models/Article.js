@@ -52,11 +52,6 @@ ArticleSchema.methods.updateFavoriteCount = function() {
   });
 };
 
-// Use a mongoose query to see how many comments have this article's id listed under 'article'
-// Instead of count increment which is prone to bugs
-// Mongo shell query: db.comments.count({"article" : ObjectId("5dc57b747a16752313f85199")})
-// db.articles.findOne(ObjectId("5dc57b747a16752313f85199")).comments.length;
-
 // Add a method that returns the JSON of an article
 ArticleSchema.methods.toJSONFor = function(user) {
   return {
