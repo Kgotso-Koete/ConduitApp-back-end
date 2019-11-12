@@ -1,15 +1,26 @@
 var router = require("express").Router();
 var passport = require("passport");
 var mongoose = require("mongoose");
+var Comment = mongoose.model("Comment");
 var Article = mongoose.model("Article");
 var User = mongoose.model("User");
-var Comment = mongoose.model("Comment");
+
 var auth = require("../auth");
 
 // Use router.param to intercept & prepopulate article data from the slug and handing over to *RUD functions
 router.param("article", function(req, res, next, slug) {
   Article.findOne({ slug: slug })
     .populate("author")
+    .then(function(article) {
+      var count = article.comments.length - 1;
+      if (count < 0) {
+        article.commentCount = 0;
+      } else {
+        article.commentCount = count;
+      }
+
+      return article.save();
+    })
     .then(function(article) {
       if (!article) {
         return res.sendStatus(404);

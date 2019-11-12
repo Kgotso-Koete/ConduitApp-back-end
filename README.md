@@ -49,11 +49,15 @@ Load the `Conduit.postman.{{environment}}.json` files in the `/api_spec` folder 
 
 Run `npm install`
 
-## 3: Run project
+## 3: Run Mongodb
+
+Navigate to your local Mongodb folder and run `mongod --dbpath=data --bind_ip 127.0.0.1`
+
+## 4: Run project
 
 Run `npm start`
 
-## 4: Open it
+## 5: Open it
 
 Open [Postman](https://www.getpostman.com/) and begin making requests to `http://localhost:3000/api/{{request}}`
 
@@ -70,6 +74,18 @@ Requests are authenticated using the `Authorization` header with a valid JWT. We
 
 1. The `required` middleware configures the express-jwt middleware using our application's secret and will return a 401 status code if the request cannot be authenticated. The payload of the JWT can then be accessed from req.payload in the endpoint.
 2. The `optional` middleware configures the express-jwt in the same way as required, but will not return a 401 status code if the request cannot be authenticated.
+
+# Timesheet log
+
+- Back end
+
+  - Version 1 (Thinkster Tutorial): 22 hours
+  - Version 2 (personal modifications): ?
+
+- Front end
+
+  - Version 1 (Thinkster Tutorial): 37 hours
+  - Version 2 (personal modifications): ?
 
 # Acknowledgements
 
