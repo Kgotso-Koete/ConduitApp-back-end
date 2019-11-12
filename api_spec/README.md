@@ -189,6 +189,7 @@ Defining the spec for the article data.
     "updatedAt": "2016-02-18T03:48:35.824Z",
     "favorited": false,
     "favoritesCount": 0,
+    "commentCount":0,
     "author": {
       "username": "jake",
       "bio": "I work at statefarm",
