@@ -153,6 +153,50 @@ router.get("/feed", auth.required, function(req, res, next) {
   });
 });
 
+// Create a route for retrieving trending articles in the global feed based on aranking by highest commentCount
+// GET /api/articles/trending
+router.get("/trending", auth.required, function(req, res, next) {
+  var limit = 20;
+  var offset = 0;
+
+  if (typeof req.query.limit !== "undefined") {
+    limit = req.query.limit;
+  }
+
+  if (typeof req.query.offset !== "undefined") {
+    offset = req.query.offset;
+  }
+
+  User.findById(req.payload.id).then(function(user) {
+    if (!user) {
+      return res.sendStatus(401);
+    }
+    // Promise.all() method takes an array of promises, then passes an array of resolved values to the attached
+    // Mongo shell query: db.articles.find({"author":{$in:[ObjectId("5dc69cb535a37c1ec7241055"), ObjectId("5dc5aadf955980353e2a8675")]}}).pretty()
+    Promise.all([
+      Article.find()
+        .sort({ commentCount: -1 })
+        .limit(limit)
+        .skip(offset)
+        .populate("author")
+        .exec(),
+      Article.count().sort({ commentCount: -1 })
+    ])
+      .then(function(results) {
+        var articles = results[0];
+        var articlesCount = results[1];
+
+        return res.json({
+          articles: articles.map(function(article) {
+            return article.toJSONFor(user);
+          }),
+          articlesCount: articlesCount
+        });
+      })
+      .catch(next);
+  });
+});
+
 // Make the endpoint for creating articles for logged in users
 // POST /api/articles
 router.post("/", auth.required, function(req, res, next) {

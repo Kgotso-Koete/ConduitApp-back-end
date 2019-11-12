@@ -437,6 +437,10 @@ Authentication optional, will return multiple articles, ordered by most recent f
 
 `GET /api/articles/feed`
 
+## Trending articles based on all articles listed by highest number of comments
+
+`GET /api/articles/trending`
+
 Can also take limit and offset query parameters like List Articles
 <br/>
 Authentication required, will return multiple articles created by followed users, ordered by most recent first.
