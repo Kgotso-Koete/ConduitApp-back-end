@@ -4,6 +4,8 @@ This is the code I wrote following the [Thinkster IO](https://thinkster.io/) tut
 
 This code is for the back end. [here is the tutorial](https://thinkster.io/tutorials/node-json-api). The front end code I wrote can be found [here](https://github.com/Kgotso-Koete/ConduitApp-front-end).
 
+# Click here for the [demo](https://conduit-by-kg.firebaseapp.com/)
+
 # Description and features
 
 ## General functionality:

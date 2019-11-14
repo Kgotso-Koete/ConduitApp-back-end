@@ -288,7 +288,6 @@ router.delete("/:article", auth.required, function(req, res, next) {
 
 // Favorite an article
 // POST /api/articles/:slug/favorite
-
 router.post("/:article/favorite", auth.required, function(req, res, next) {
   var articleId = req.article._id; // middleware to get article data from parameter
 
@@ -298,11 +297,14 @@ router.post("/:article/favorite", auth.required, function(req, res, next) {
         return res.sendStatus(401);
       }
 
-      return user.favorite(articleId).then(function() {
-        return req.article.updateFavoriteCount().then(function(article) {
-          return res.json({ article: article.toJSONFor(user) });
+      // check that the user is not favoring/unfavoring their own Article
+      if (req.article.author._id.toString() !== req.payload.id.toString()) {
+        return user.favorite(articleId).then(function() {
+          return req.article.updateFavoriteCount().then(function(article) {
+            return res.json({ article: article.toJSONFor(user) });
+          });
         });
-      });
+      }
     })
     .catch(next);
 });
@@ -317,12 +319,14 @@ router.delete("/:article/favorite", auth.required, function(req, res, next) {
       if (!user) {
         return res.sendStatus(401);
       }
-
-      return user.unfavorite(articleId).then(function() {
-        return req.article.updateFavoriteCount().then(function(article) {
-          return res.json({ article: article.toJSONFor(user) });
+      // check that the user is not favoring/unfavoring their own Article
+      if (req.article.author._id.toString() !== req.payload.id.toString()) {
+        return user.unfavorite(articleId).then(function() {
+          return req.article.updateFavoriteCount().then(function(article) {
+            return res.json({ article: article.toJSONFor(user) });
+          });
         });
-      });
+      }
     })
     .catch(next);
 });
