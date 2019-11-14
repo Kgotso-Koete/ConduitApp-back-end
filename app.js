@@ -1,3 +1,4 @@
+require("dotenv").config();
 var fs = require("fs"),
   http = require("http"),
   path = require("path"),
