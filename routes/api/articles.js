@@ -269,19 +269,26 @@ router.put("/:article", auth.required, function(req, res, next) {
 // Create the endpoint for deleting articles
 // DELETE /api/articles/:slug
 router.delete("/:article", auth.required, function(req, res, next) {
-  User.findById(req.payload.id).then(function() {
-    if (req.article.author._id.toString() === req.payload.id.toString()) {
-      return req.article.remove().then(function() {
-        return res.sendStatus(204);
-      });
-    } else {
-      return res.sendStatus(403);
-    }
-  });
+  User.findById(req.payload.id)
+    .then(function(user) {
+      if (!user) {
+        return res.sendStatus(401);
+      }
+
+      if (req.article.author._id.toString() === req.payload.id.toString()) {
+        return req.article.remove().then(function() {
+          return res.sendStatus(204);
+        });
+      } else {
+        return res.sendStatus(403);
+      }
+    })
+    .catch(next);
 });
 
 // Favorite an article
 // POST /api/articles/:slug/favorite
+
 router.post("/:article/favorite", auth.required, function(req, res, next) {
   var articleId = req.article._id; // middleware to get article data from parameter
 
@@ -310,15 +317,12 @@ router.delete("/:article/favorite", auth.required, function(req, res, next) {
       if (!user) {
         return res.sendStatus(401);
       }
-      if (req.article.author._id.toString() === req.payload.id.toString()) {
-        return user.unfavorite(articleId).then(function() {
-          return req.article.updateFavoriteCount().then(function(article) {
-            return res.sendStatus(204);
-          });
+
+      return user.unfavorite(articleId).then(function() {
+        return req.article.updateFavoriteCount().then(function(article) {
+          return res.json({ article: article.toJSONFor(user) });
         });
-      } else {
-        return res.sendStatus(403);
-      }
+      });
     })
     .catch(next);
 });

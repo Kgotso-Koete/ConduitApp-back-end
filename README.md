@@ -2,7 +2,7 @@
 
 This is the code I wrote following the [Thinkster IO](https://thinkster.io/) tutorial on building a Medium clone (blogging social network) using the MERN stack (Mongodb Express React and Node) and is based on the ([Thinkster IO Real World App](https://github.com/gothinkster/realworld), from the [Thinkster Full Stack tutorial series](https://thinkster.io/tutorials/fullstack) by [Thinkster IO](https://thinkster.io/)
 
-This code is for the back end. [here is the tutorial](https://thinkster.io/tutorials/node-json-api). The front end code I wrote can be found [here]().
+This code is for the back end. [here is the tutorial](https://thinkster.io/tutorials/node-json-api). The front end code I wrote can be found [here](https://github.com/Kgotso-Koete/ConduitApp-front-end).
 
 # Description and features
 
@@ -39,7 +39,7 @@ The API specification is listed in the /api folder of this repository
 
 # How to run the code:
 
-The back end is deployed on Heroku, and the front end is deployed on [some cloud](). Here is the [demo](), and here is the production api link `https://intense-hollows-36762.herokuapp.com/api` that can be used with any front end for requests
+The back end is deployed on Heroku, and the front end is deployed on Firebase. Here is the [demo](https://conduit-by-kg.firebaseapp.com/), and here is the production api link `https://intense-hollows-36762.herokuapp.com/api` that can be used with any front end for requests
 
 ## 1: Download Postman API environment
 
@@ -85,7 +85,7 @@ Requests are authenticated using the `Authorization` header with a valid JWT. We
 - Front end
 
   - Version 1 (Thinkster Tutorial): 37 hours
-  - Version 2 (personal modifications): ?
+  - Version 2 (personal modifications): 17 hours
 
 # Acknowledgements
 
