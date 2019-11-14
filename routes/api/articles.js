@@ -83,8 +83,8 @@ router.get("/", auth.optional, function(req, res, next) {
       //  Promise.all() method takes an array of promises, then passes an array of resolved values to the attached
       return Promise.all([
         Article.find(query)
-          .limit(limit)
-          .skip(offset)
+          .limit(Number(limit))
+          .skip(Number(offset))
           .sort({ createdAt: "desc" })
           .populate("author")
           .exec(),
@@ -132,8 +132,8 @@ router.get("/feed", auth.required, function(req, res, next) {
     // Mongo shell query: db.articles.find({"author":{$in:[ObjectId("5dc69cb535a37c1ec7241055"), ObjectId("5dc5aadf955980353e2a8675")]}}).pretty()
     Promise.all([
       Article.find({ author: { $in: user.following } })
-        .limit(limit)
-        .skip(offset)
+        .limit(Number(limit))
+        .skip(Number(offset))
         .populate("author")
         .exec(),
       Article.count({ author: { $in: user.following } })
@@ -176,8 +176,8 @@ router.get("/trending", auth.required, function(req, res, next) {
     Promise.all([
       Article.find()
         .sort({ commentCount: -1 })
-        .limit(limit)
-        .skip(offset)
+        .limit(Number(limit))
+        .skip(Number(offset))
         .populate("author")
         .exec(),
       Article.count().sort({ commentCount: -1 })
