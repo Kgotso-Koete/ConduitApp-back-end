@@ -310,12 +310,15 @@ router.delete("/:article/favorite", auth.required, function(req, res, next) {
       if (!user) {
         return res.sendStatus(401);
       }
-
-      return user.unfavorite(articleId).then(function() {
-        return req.article.updateFavoriteCount().then(function(article) {
-          return res.json({ article: article.toJSONFor(user) });
+      if (req.article.author._id.toString() === req.payload.id.toString()) {
+        return user.unfavorite(articleId).then(function() {
+          return req.article.updateFavoriteCount().then(function(article) {
+            return res.sendStatus(204);
+          });
         });
-      });
+      } else {
+        return res.sendStatus(403);
+      }
     })
     .catch(next);
 });
