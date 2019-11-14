@@ -39,7 +39,7 @@ The API specification is listed in the /api folder of this repository
 
 # How to run the code:
 
-The app is deployed on [??]. Here is the [demo](), and here is the production api link `{{api link}}` that can be used with any front end
+The back end is deployed on Heroku, and the front end is deployed on [some cloud](). Here is the [demo](), and here is the production api link `https://intense-hollows-36762.herokuapp.com/api` that can be used with any front end for requests
 
 ## 1: Download Postman API environment
 
