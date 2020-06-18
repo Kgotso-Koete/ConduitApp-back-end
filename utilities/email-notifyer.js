@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const notifyUser = (emailData, publishedNews) => {
+const notifyUser = (emailData, dataUpdated) => {
   const transporter = nodemailer.createTransport({
     service: emailData.service,
     auth: emailData.auth,
@@ -10,7 +10,7 @@ const notifyUser = (emailData, publishedNews) => {
     from: emailData.from,
     to: emailData.to,
     subject: emailData.subject,
-    text: `${emailData.text}:\n${publishedNews}`,
+    text: `${emailData.text}:\n${dataUpdated}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

@@ -12,7 +12,7 @@ const email = {
   text: "Please log into the afriwiki app to see new data",
 };
 
-const pageURL = "http://ppgcc.posgrad.ufsc.br/cursos/";
+const pageURL = "https://www.bbc.com/news/world-africa-16833769";
 
 const mongoURI = process.env.MONGODB_URI;
 
