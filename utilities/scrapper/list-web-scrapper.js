@@ -1,7 +1,6 @@
 const puppeteer = require("puppeteer");
-const itemscrapper = require("./item-web-scrapper");
 
-const webscraping = async (pageURL) => {
+const listscrapper = async (pageURL) => {
   const browser = await puppeteer.launch({
     headless: false,
     args: ["--no-sandbox"],
@@ -25,7 +24,12 @@ const webscraping = async (pageURL) => {
       // iterate though each item found
       countryListDOM.forEach((linkElement) => {
         // get link name and website and save in object
-        const countryName = linkElement.querySelector(".cta").innerHTML;
+        const countryName = linkElement
+          .querySelector(".cta")
+          .innerHTML.trimLeft()
+          .trimRight()
+          .replace(/(\r\n|\n|\r)/gm, "")
+          .split(",");
         const countryLink = linkElement.querySelector("a").href;
         const countryObject = Object.assign({}, { [countryName]: countryLink });
 
@@ -46,4 +50,4 @@ const webscraping = async (pageURL) => {
   return dataObj;
 };
 
-module.exports = webscraping;
+module.exports = listscrapper;
