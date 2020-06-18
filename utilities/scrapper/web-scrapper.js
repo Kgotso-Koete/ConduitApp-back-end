@@ -5,7 +5,6 @@ const compareAndSaveResults = require("../database-updater");
 const webcrapper = async () => {
   listscrapper("https://www.bbc.com/news/world-africa-16833769")
     .then((dataObj) => {
-      //console.log(dataObj);
       dataObj["countryProfileLinks"].forEach((country) => {
         const countryLink = Object.keys(country).map((k) => country[k])[0];
 

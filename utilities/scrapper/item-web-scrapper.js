@@ -17,6 +17,17 @@ const itemscrapper = async (pageURL) => {
     await page.goto(pageURL);
 
     const countryObject = await page.evaluate(() => {
+      // get country name
+      const countryName = document
+        .querySelector(".story-body__h1")
+        .innerHTML.replace("country", "")
+        .replace("Country", "")
+        .replace("profile", "")
+        .replace("Profile", "")
+        .trimLeft()
+        .trimRight()
+        .replace(/(\r\n|\n|\r)/gm, "");
+
       // get country summary
       const countryIntro = document
         .querySelector(".story-body__introduction")
@@ -27,7 +38,12 @@ const itemscrapper = async (pageURL) => {
       // get country capital
       const countryCapital = document
         .querySelector(".ns_subtitle")
-        .innerHTML.trimLeft()
+        .innerHTML.replace("capital", "")
+        .replace("Capital", "")
+        .replace(":", "")
+        .replace("administrative", "")
+        .replace("Administrative", "")
+        .trimLeft()
         .trimRight()
         .replace(/(\r\n|\n|\r)/gm, "");
 
@@ -48,6 +64,7 @@ const itemscrapper = async (pageURL) => {
       return Object.assign(
         {},
         {
+          name: countryName,
           intro: countryIntro,
           administrativeCapital: countryCapital,
           statistics: countryStatistics,
