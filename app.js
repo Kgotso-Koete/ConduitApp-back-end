@@ -96,13 +96,14 @@ app.use(function (err, req, res, next) {
 // start the web scrapper
 const data = require("./config/environment-variables");
 const { pageURL } = data;
-const webscrapper = require("./utilities/web-scrapper");
+const webscrapper = require("./utilities/list-web-scrapper");
+const itemscrapper = require("./utilities/item-web-scrapper");
 const compareAndSaveResults = require("./utilities/database-updater");
 
-webscrapper(pageURL)
+webscrapper("https://www.bbc.com/news/world-africa-16833769")
   .then((dataObj) => {
     console.log(dataObj);
-    compareAndSaveResults(dataObj);
+    //compareAndSaveResults(dataObj);
   })
   .catch(console.error);
 

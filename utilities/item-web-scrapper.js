@@ -1,6 +1,6 @@
 const puppeteer = require("puppeteer");
 
-const webscraping = async (pageURL) => {
+const itemscrapper = async (pageURL) => {
   const browser = await puppeteer.launch({
     headless: false,
     args: ["--no-sandbox"],
@@ -17,18 +17,16 @@ const webscraping = async (pageURL) => {
     await page.goto(pageURL);
 
     const publishedNews = await page.evaluate(() => {
-      const newsDOM = document.querySelectorAll("#recent-posts-3 > ul > li");
-      let newsList = [];
-      newsDOM.forEach((linkElement) => {
-        const currentNews = linkElement.querySelector("a").innerText;
-        newsList.push(currentNews);
-      });
-      return newsList;
+      const contentDOM = document.querySelectorAll(
+        "#content > article > div > p"
+      );
+      return contentDOM;
     });
 
     dataObj = {
-      amount: publishedNews.length,
-      publishedNews,
+      title: "",
+      date: "",
+      article: publishedNews,
     };
   } catch (e) {
     console.log(e);
@@ -38,4 +36,4 @@ const webscraping = async (pageURL) => {
   return dataObj;
 };
 
-module.exports = webscraping;
+module.exports = itemscrapper;
