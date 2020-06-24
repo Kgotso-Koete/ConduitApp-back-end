@@ -94,7 +94,7 @@ app.use(function (err, req, res, next) {
 
 // start the web scrapper
 const webscrapper = require("./utilities/scrapper/web-scrapper");
-// webscrapper();
+webscrapper();
 
 // finally, start the server
 var server = app.listen(process.env.PORT || 3000, function () {
