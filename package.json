@@ -1,7 +1,7 @@
 {
-  "name": "afri-wiki",
+  "name": "conduit-node",
   "version": "1.0.0",
-  "description": "A portal to learn more about Africa using data",
+  "description": "conduit on node",
   "main": "app.js",
   "scripts": {
     "start": "node app",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kgotso-Koete/afri-wiki.git"
+    "url": "git+https://github.com/gothinkster/productionready-node-api.git"
   },
   "license": "ISC",
   "dependencies": {
@@ -28,10 +28,8 @@
     "mongoose": "^4.13.19",
     "mongoose-unique-validator": "1.0.2",
     "morgan": "1.7.0",
-    "nodemailer": "^6.1.1",
     "passport": "0.3.2",
     "passport-local": "1.0.0",
-    "puppeteer": "^1.16.0",
     "request": "2.69.0",
     "slug": "0.9.1",
     "underscore": "1.8.3"

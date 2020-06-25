@@ -17,14 +17,14 @@ var auth = {
   required: jwt({
     secret: secret,
     userProperty: "payload",
-    getToken: getTokenFromHeader,
+    getToken: getTokenFromHeader
   }),
   optional: jwt({
     secret: secret,
     userProperty: "payload",
     credentialsRequired: false,
-    getToken: getTokenFromHeader,
-  }),
+    getToken: getTokenFromHeader
+  })
 };
 
 module.exports = auth;
