@@ -48,7 +48,8 @@ if (isProduction) {
 }
 
 require("./models/User");
-require("./models/Country");
+require("./models/Article");
+require("./models/Comment");
 require("./models/News");
 require("./config/passport");
 

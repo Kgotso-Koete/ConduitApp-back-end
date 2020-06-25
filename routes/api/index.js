@@ -1,6 +1,9 @@
 var router = require("express").Router();
 
 router.use("/", require("./users")); // users router now integrated with the API router
+router.use("/profiles", require("./profiles")); // profiles router now integrated with the API router
+router.use("/articles", require("./articles")); // articles router now integrated with the API router
+router.use("/tags", require("./tags")); // tags router now integrated with the API router
 router.use("/countries", require("./countries")); //
 
 // Create a middleware function for API router to handle validation errors from Mongoose
